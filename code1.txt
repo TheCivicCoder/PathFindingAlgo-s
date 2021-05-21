@@ -1,0 +1,92 @@
+// path finding algo's sample 2
+
+// I will take two points and will see if it is possible to get from one point two another point  using dfs with obstructions included in the grid
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int grid[100][100];
+bool vis[100][100];
+int u,v,x,y; 
+int dx[]= {1,0,-1,0};
+int dy[]= {0,1,0,-1};
+
+bool valid(int a, int b)
+{
+    if(a>=0 && b>=0 && a<100 && b <100 && vis[a][b]==false) return true;
+    return false;
+}
+
+bool dfs(int x, int y)
+{
+    if(!vis[x][y])
+    {
+        vis[x][y]=true;
+        if(x== u && y==v)
+            return true;
+        else 
+        {
+            for(int i=0; i<4; i++)
+            {
+                if(valid(x+dx[i], y+dy[i])) 
+                {
+                    if(dfs(x+dx[i], y+dy[i])) return true;
+                }
+            }
+        }
+        return false;
+        
+    }
+    return false;
+}
+
+int main()
+{
+
+    // algo to find a valid path from start to end
+    memset(vis, false, sizeof(vis));
+    cout<<"insert your start and end points\n";
+    cin>> u >> v>>x>>y;
+
+    cout<<"Insert the number of obstruction points in your array ";
+    int n; cin>> n; 
+    cout<<"insert the points in the same axis";
+    while(n--)
+    {
+        cout<<"for horizontal obstruction type \"0\" else type \"1\" ";
+        int axis; cin>> axis;
+        if(axis==1)
+        {
+            //keep the row and col values in and between 0 and 99
+            cout<<"insert the row number";
+            int row; cin>> row;
+            cout<<"insert the columns respectively";
+            int a,b; cin>> a >> b;
+            if(a>b) swap(a,b);
+            for(int i=a; i<=b; i++)
+            {
+                vis[row][i]=true;
+            }
+        }
+        else
+        {
+            cout<<"insert the column number";
+            int col; cin>> col;
+            cout<<"insert the rows respectively";
+            int a,b; cin>> a >> b;
+            if(a>b) swap(a,b);
+            for(int i=a; i<=b; i++)
+            {
+                vis[i][col]=true;
+            }
+        }
+
+    }
+
+    if(dfs(x,y)) cout<<"yes ";
+    else cout<<"No ";
+    return 0;
+}
+
