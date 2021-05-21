@@ -1,0 +1,83 @@
+//source code part 2
+// algo for the shortest path finding algo's
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int INF= 1000*1000*1000;
+#define pb push_back
+
+
+// declaration of all the containers
+
+vector<bool> vis(100,false);
+vector<int> distances(100, INF);
+vector<pair<int,int> > graph[100];  // declaring the graph
+
+
+// Shortest Path Finding Algorithm to find shortest distance from source node to all the nodes in graph (accessible from the source node)
+
+void djikstra (int n)
+{
+    set<pair<int,int> > buck;
+    distances[n]=0;
+    buck.insert({0,n});
+    vis[n]=true;
+    
+    while(!buck.empty())
+    {
+        pair<int,int> itr= *buck.begin(); 
+        buck.erase(itr);
+        int node= itr.second; 
+
+        for(auto i: graph[node])
+        {
+            if(vis[i.second]) continue;
+            if(distances[i.first] > distances[node] + i.second)
+            {
+                distances[i.first] = distances[node] + i.second;
+                buck.insert({distances[i.first], i.first});
+            }
+            
+        }
+        
+    }
+    
+}
+
+int main()
+{
+
+// cout<<"input the  desired number of nodes and edges in the graph\n";
+
+    int node,edges; cin>> node>> edges;
+
+ //   cout<<"inserting the desired graph for each node inputing the directed node and its distance \n";
+
+    for(int i=0; i<edges; i++)
+    {
+        int u,v, dist; cin>> u >> v>> dist;
+        graph[u].pb({v,dist});
+        graph[v].pb({u,dist});
+    }
+    
+ //   cout<<"input your source node "; 
+    
+    int src; cin>> src;
+
+// passing the source node into the path finding function
+
+    djikstra(src);
+    
+// below given for loop will print all the distances for the given nodes
+
+//    cout<<"distance of each node from the source node "<<src<<" to all the accessible nodes in the graph";
+    for(int i=0; i<=node; i++)
+    {
+        cout<<i<<" -> "<<distances[i]<<"\n";
+    }
+    
+    return 0;
+}
+
